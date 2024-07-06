@@ -3,6 +3,8 @@ const Customer = require("../models/CustomerModel");
 const Seller = require("../models/SellerModel");
 const bcrypt = require("bcrypt");
 const saltround = 10; // Salt rounds for bcrypt
+const secretKey="0702"
+const jwt=require("jsonwebtoken")
 
 const register = async (req, res) => {
   const { name, email, password, contact, address, role } = req.body;
@@ -46,7 +48,7 @@ const register = async (req, res) => {
         password: savedUser.password, // Store hashed password from User model
         contact,
         address,
-        userId: savedUser._id, // Reference to User model
+        user_id: savedUser._id, // Reference to User model
       });
       await newCustomer.save();
     }
@@ -59,7 +61,7 @@ const register = async (req, res) => {
         password: savedUser.password, // Store hashed password from User model
         contact,
         address,
-        userId: savedUser._id, // Reference to User model
+        user_id: savedUser._id, // Reference to User model
       });
       await newSeller.save();
     }
@@ -78,4 +80,61 @@ const register = async (req, res) => {
   }
 };
 
+
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  let validation = "";
+
+  if (!email) validation += "Enter email. ";
+  if (!password) validation += "Enter password. ";
+
+  if (validation) {
+    return res.status(400).json({
+      status: 400,
+      success: false,
+      msg: validation.trim(),
+    });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({
+        status: 401,
+        success: false,
+        msg: "Invalid email or password.",
+      });
+    }
+
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        status: 401,
+        success: false,
+        msg: "Invalid email or password.",
+      });
+    }
+
+    // Generate JWT token 
+    const token = jwt.sign({ id: user._id, email: user.email }, secretKey, {
+      expiresIn: '10h', // Token expires in 10 hour
+    });
+
+    res.status(200).json({
+      status: 200,
+      success: true,
+      msg: "Login successful.",
+      token, // Return the token to the client
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: 500,
+      success: false,
+      msg: String(err),
+    });
+  }
+};
+
 module.exports = register;
+module.exports = login;
+
