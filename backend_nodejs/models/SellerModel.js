@@ -9,4 +9,4 @@ const Sellerschema=new mongoose.Schema({
     status:{type:Boolean,default:false},
     created_at:{type:Date,default:Date.now()},
 })
-module.exports=new mongoose.model("Customer",Sellerschema)
+module.exports=new mongoose.model("Seller",Sellerschema)

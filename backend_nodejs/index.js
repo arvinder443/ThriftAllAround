@@ -7,11 +7,8 @@ require("./config/Db")
 index.use(express.urlencoded({'extended':true}))
 index.use(express.json({ limit:'500mb'}))
 
-index.get("/",(req,res)=>{
-    res.json({
-        msg:"it is working"
-    })
-})
+const userRoute=require("./routes/Route")
+index.use("/user",userRoute)
 
 index.listen(3000,()=>{
     console.log("The port number is 3000")
