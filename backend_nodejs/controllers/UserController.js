@@ -1,6 +1,7 @@
 const User = require("../models/UserModel");
 const Customer = require("../models/CustomerModel");
 const Seller = require("../models/SellerModel");
+const Contact=require("../models/ContactUsModel")
 const bcrypt = require("bcrypt");
 const saltround = 10; // Salt rounds for bcrypt
 const secretKey="0702"
@@ -135,6 +136,49 @@ const login = async (req, res) => {
   }
 };
 
+const contact=(req,res)=>{
+  const {name,email,msg}=req.body
+  let validation=""
+  
+  if (!name) validation += "Enter your name. ";
+  if (!email) validation += "Enter your email. ";
+  if (!msg) validation += "Enter your message. ";
+
+  if (validation) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        msg: validation.trim(),
+      });
+    }
+
+  else
+
+  {
+      const newContact=new Contact()
+      newContact.name=req.body.name
+      newContact.email=req.body.email
+      newContact.msg=req.body.msg
+      newContact.save()
+      .then(newContactPass=>{
+          res.json({
+              status:200,
+              success:true,
+              msg:newContactPass
+          })
+      })
+
+      .catch(newContactFail=>{
+          res.json({
+              status:400,
+              success:false,
+              msg:newContactFail
+          })
+      })
+  }
+  
+}
 module.exports = register;
 module.exports = login;
+module.exports = contact;
 
