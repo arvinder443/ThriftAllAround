@@ -20,6 +20,6 @@ const categorystorage = multer.diskStorage({
 route.post("/register",UserController)
 route.post("/login",UserController)
 route.post("/contact",UserController)
-route.post("/addcategory",categoryupload.single("image"),CategoryController)
+route.post("/addcategory",categoryupload.single("category_image"),CategoryController.addCategory)
 
 module.exports=route

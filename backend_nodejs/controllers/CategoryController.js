@@ -1,48 +1,61 @@
-const Category = require("../models/CategoryModel")
+const Category = require("../models/CategoryModel");
 
 const addCategory = (req, res) => {
-    const { category_name, category_description, category_image } = req.body
-    let validation = ""
-    if (!category_name) validation += "Enter Category Name."
-    if (!category_description) validation += "Enter Description."
-    if (!category_image) validation += "Enter Category image."
+    const { category_name, category_description } = req.body;
+    let validation = "";
+    if (!category_name) validation += "Enter Category Name. ";
+    if (!category_description) validation += "Enter Description. ";
+    if (!req.file) validation += "Enter Category image. ";
 
     if (validation) {
         res.json({
             status: 400,
             success: false,
-            msg: "Enter all the fields"
-        })
-    }
-    else {
+            msg: validation.trim()
+        });
+    } else {
         Category.findOne({ category_name: req.body.category_name })
             .then(categoryPass => {
-                if (category_name == null) {
-                    const addCategory = new Category()
-                    addCategory.category_name = req.body.category_name
-                    addCategory.category_description = req.body.category_description
-                    if(req.file)
-                    {
-                        addCategory.category_image="category/"+req.file.filename
+                if (!categoryPass) {
+                    const addCategory = new Category();
+                    addCategory.category_name = req.body.category_name;
+                    addCategory.category_description = req.body.category_description;
+                    if (req.file) {
+                        addCategory.category_image = "category/" + req.file.filename;
                     }
-                    categoryPass.save()
+                    addCategory.save()
+                        .then(() => {
+                            res.json({
+                                status: 200,
+                                success: true,
+                                msg: "Category added."
+                            });
+                        })
+                        .catch(err => {
+                            res.json({
+                                status: 400,
+                                success: false,
+                                msg: String(err)
+                            });
+                        });
+                } else {
                     res.json({
-                        status:200,
-                        success:true,
-                        msg:"Category added."
-                    })
+                        status: 400,
+                        success: false,
+                        msg: "Category name already exists."
+                    });
                 }
-
             })
             .catch(categoryFail => {
                 res.json({
                     status: 400,
                     success: false,
                     msg: String(categoryFail)
-                })
-
-            })
+                });
+            });
     }
-}
+};
 
-module.exports = addCategory
+module.exports = {
+    addCategory
+};
