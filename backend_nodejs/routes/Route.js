@@ -22,5 +22,6 @@ route.post("/login",UserController)
 route.post("/contact",UserController)
 route.post("/addcategory",categoryupload.single("category_image"),CategoryController.addCategory)
 route.post("/getallcategory",CategoryController.getAllCategories)
+route.post("/deletecategory",CategoryController.deleteCategory)
 
 module.exports=route

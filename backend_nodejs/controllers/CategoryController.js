@@ -74,7 +74,49 @@ const getAllCategories=(req,res)=>{
     })
 }
 
+const deleteCategory = (req, res) => {
+    Category.findOne({ _id: req.body._id })
+        .then(deleteCategoryPass => {
+            if (deleteCategoryPass) {
+                Category.deleteOne({ _id: req.body._id })
+                    .then(() => {
+                        res.json({
+                            status: 200,
+                            success: true,
+                            msg: "Category deleted"
+                        });
+                    })
+                    .catch(err => {
+                        res.json({
+                            status: 400,
+                            success: false,
+                            msg: String(err)
+                        });
+                    });
+            } else {
+                res.json({
+                    status: 404,
+                    success: false,
+                    msg: "Category not found"
+                });
+            }
+        })
+        .catch(deleteCategoryFail => {
+            res.json({
+                status: 400,
+                success: false,
+                msg: String(deleteCategoryFail)
+            });
+        });
+};
+
+module.exports = {
+    deleteCategory
+};
+
+
 module.exports = {
     addCategory,
-    getAllCategories
+    getAllCategories,
+    deleteCategory
 };
