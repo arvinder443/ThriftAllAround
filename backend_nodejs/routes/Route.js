@@ -23,5 +23,6 @@ route.post("/contact",UserController)
 route.post("/addcategory",categoryupload.single("category_image"),CategoryController.addCategory)
 route.post("/getallcategory",CategoryController.getAllCategories)
 route.post("/deletecategory",CategoryController.deleteCategory)
+route.post("/updatecategory",CategoryController.updateCategory)
 
 module.exports=route
