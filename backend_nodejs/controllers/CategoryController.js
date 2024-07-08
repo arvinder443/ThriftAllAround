@@ -109,14 +109,37 @@ const deleteCategory = (req, res) => {
             });
         });
 };
-
-module.exports = {
-    deleteCategory
-};
-
-
+const updateCategory=(req,res)=>{
+    Category.findOne({_id:req.body._id})
+    .then(updateCategoryPass={
+        if(updateCategoryPass)
+        {
+           updateCategoryPass.category_name=req.body.category_name
+           updateCategoryPass.category_description=req.body.category_description
+           if(req.file)
+           {
+            updateCategoryPass.category_image="category/"+req.file.filename
+           }
+           updateCategoryPass.save()
+           res.json({
+            status: 200,
+            success: true,
+            msg: "Category updated successfully"
+        });
+        }
+      
+    })
+    .catch(updateCategoryFail=>{
+        res.json({
+            status: 400,
+            success: false,
+            msg: String(updateCategoryFail)
+        });
+    })
+}
 module.exports = {
     addCategory,
     getAllCategories,
-    deleteCategory
+    deleteCategory,
+    updateCategory
 };
