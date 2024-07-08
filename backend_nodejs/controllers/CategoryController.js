@@ -56,6 +56,25 @@ const addCategory = (req, res) => {
     }
 };
 
+const getAllCategories=(req,res)=>{
+    Category.find(req.body)
+    .then(getAllCategoriesPass=>{
+        res.json({
+            status:200,
+            success:true,
+            msg:getAllCategoriesPass
+        })
+    })
+    .catch(getAllCategoriesFail=>{
+        res.json({
+            status:200,
+            success:true,
+            msg:String(getAllCategoriesFail)
+        })
+    })
+}
+
 module.exports = {
-    addCategory
+    addCategory,
+    getAllCategories
 };

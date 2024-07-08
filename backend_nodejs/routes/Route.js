@@ -21,5 +21,6 @@ route.post("/register",UserController)
 route.post("/login",UserController)
 route.post("/contact",UserController)
 route.post("/addcategory",categoryupload.single("category_image"),CategoryController.addCategory)
+route.post("/getallcategory",CategoryController.getAllCategories)
 
 module.exports=route
