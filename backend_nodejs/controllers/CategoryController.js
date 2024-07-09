@@ -110,13 +110,13 @@ const deleteCategory = (req, res) => {
         });
 };
 const updateCategory = (req, res) => {
-    if (!req.body._id) {
-        return res.json({
-            status: 400,
-            success: false,
-            msg: "Category ID is required"
-        });
-    }
+    // if (!req.body._id) {
+    //     return res.json({
+    //         status: 400,
+    //         success: false,
+    //         msg: "Category ID is required"
+    //     });
+    // }
 
     Category.findOne({_id: req.body._id})
         .then(updateCategoryPass => {
