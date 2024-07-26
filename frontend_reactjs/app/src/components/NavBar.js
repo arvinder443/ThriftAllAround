@@ -11,6 +11,8 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const NavBar = () => {
   const [state, setState] = React.useState({ left: false });
@@ -62,12 +64,22 @@ const NavBar = () => {
   );
 
   return (
-    <div className='flex items-center justify-between p-4'>
+    <div className='flex items-center justify-between p-4 w-3/4 mx-auto'>
       <div className='flex items-center space-x-4'>
         <Button onClick={toggleDrawer(true)}>
           <MenuIcon className='text-black' />
         </Button>
         <span className='text-xl font-bold text-black'>ThriftAll Around</span>
+      </div>
+      <div className='flex items-center space-x-4'>
+        <Button className='flex items-center'>
+          <AccountCircleIcon className='text-black' />
+          <span className='ml-1 text-black'>Sign In</span>
+        </Button>
+        <Button className='flex items-center'>
+          <SearchIcon className='text-black' />
+          <span className='ml-1 text-black'>Search</span>
+        </Button>
       </div>
       <SwipeableDrawer
         anchor='left'

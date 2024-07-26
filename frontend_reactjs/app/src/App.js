@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="App">
       <NavBar/>
-      <header>
+      <header className='p-5'>
         Hello there, I am using Tailwind CSS with Titillium Web, Segoe UI, and Roboto fonts!
       </header>
     </div>
