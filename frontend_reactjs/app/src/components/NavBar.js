@@ -13,9 +13,12 @@ import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 const NavBar = () => {
   const [state, setState] = React.useState({ left: false });
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -30,7 +33,7 @@ const NavBar = () => {
 
   const list = () => (
     <Box
-      sx={{ width: 250 }}
+      sx={{ width: isMobile ? 150 : 250 }} // Adjust drawer width based on screen size
       role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
@@ -64,22 +67,26 @@ const NavBar = () => {
   );
 
   return (
-    <div className='flex items-center justify-between p-4 w-3/4 mx-auto'>
-      <div className='flex items-center space-x-4'>
+    <div className={`flex items-center justify-between p-4 ${isMobile ? 'w-full' : 'w-3/4'} mx-auto`}>
+      <div className={`flex items-center ${isMobile ? 'space-x-2' : 'space-x-4'}`}>
         <Button onClick={toggleDrawer(true)}>
           <MenuIcon className='text-black' />
         </Button>
-        <span className='text-xl font-bold text-black'>ThriftAll Around</span>
+        <span className={`text-xl font-bold text-black ${isMobile ? 'text-lg' : ''}`}>
+          ThriftAll Around
+        </span>
       </div>
-      <div className='flex items-center space-x-4'>
-        <Button className='flex items-center'>
+      <div className={`flex items-center ${isMobile ? 'space-x-2' : 'space-x-4'}`}>
+        <Button className='flex items-center' size={isMobile ? 'small' : 'medium'}>
           <AccountCircleIcon className='text-black' />
-          <span className='ml-1 text-black'>Sign In</span>
+          <span className={`ml-1 text-black ${isMobile ? 'text-sm' : ''}`}>Sign In</span>
         </Button>
-        <Button className='flex items-center'>
-          <SearchIcon className='text-black' />
-          <span className='ml-1 text-black'>Search</span>
-        </Button>
+        {!isMobile && (
+          <Button className='flex items-center' size={isMobile ? 'small' : 'medium'}>
+            <SearchIcon className='text-black' />
+            <span className={`ml-1 text-black ${isMobile ? 'text-sm' : ''}`}>Search</span>
+          </Button>
+        )}
       </div>
       <SwipeableDrawer
         anchor='left'
