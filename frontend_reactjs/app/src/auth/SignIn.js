@@ -1,13 +1,15 @@
-import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+// SignIn.js
+import React, { useState, useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { FaSignInAlt } from 'react-icons/fa';
+import SignUp from './SignUp';
 
 const SignIn = ({ open, onClose }) => {
   const modalRef = useRef(null);
   const formRef = useRef(null);
   const buttonRef = useRef(null);
-  const inputsRef = useRef([]);
+  const inputsRef = useRef([]); // Define inputsRef
+  const [signUpOpen, setSignUpOpen] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -43,7 +45,7 @@ const SignIn = ({ open, onClose }) => {
     gsap.to(buttonRef.current, {
       scaleX: 1,
       scaleY: 1,
-      backgroundColor: '#007bff', 
+      backgroundColor: '#007bff',
       duration: 0.5,
       ease: 'power2.inOut'
     });
@@ -70,49 +72,52 @@ const SignIn = ({ open, onClose }) => {
   if (!open) return null;
 
   return (
-    <div 
-      className="fixed inset-0 bg-gray-800 bg-opacity-75 z-50 flex items-center justify-center"
-      onClick={onClose}
-    >
-      <div
-        ref={modalRef}
-        className="bg-white p-12 rounded-lg shadow-lg w-full max-w-md relative"
-        onClick={(e) => e.stopPropagation()}
+    <>
+      <div 
+        className="fixed inset-0 bg-gray-800 bg-opacity-75 z-50 flex items-center justify-center"
+        onClick={onClose}
       >
-        <h2 className="text-2xl font-bold mb-6">Sign In</h2>
-        <div ref={formRef}>
-          <input 
-            type="text" 
-            placeholder="Username" 
-            className="block w-full p-3 mb-4 border border-gray-300 rounded"
-            ref={(el) => inputsRef.current[0] = el}
-            onFocus={() => handleFocus(0)}
-            onBlur={() => handleBlur(0)}
-          />
-          <input 
-            type="password" 
-            placeholder="Password" 
-            className="block w-full p-3 mb-4 border border-gray-300 rounded"
-            ref={(el) => inputsRef.current[1] = el}
-            onFocus={() => handleFocus(1)}
-            onBlur={() => handleBlur(1)}
-          />
-          <button 
-            ref={buttonRef}
-            className="w-full bg-[#007bff] text-white py-3 rounded border border-[#007bff] flex items-center justify-center space-x-2 transition-transform transform hover:scale-105"
-            onClick={onClose}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            <FaSignInAlt />
-            <span>Sign In</span>
-          </button>
-          <p className="mt-4 text-center">
-            Don't have an account? <Link to="/signup" className="text-blue-500">Sign Up</Link>
-          </p>
+        <div
+          ref={modalRef}
+          className="bg-white p-12 rounded-lg shadow-lg w-full max-w-md relative"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <h2 className="text-2xl font-bold mb-6">Sign In</h2>
+          <div ref={formRef}>
+            <input 
+              type="text" 
+              placeholder="Username" 
+              className="block w-full p-3 mb-4 border border-gray-300 rounded"
+              ref={(el) => (inputsRef.current[0] = el)}
+              onFocus={() => handleFocus(0)}
+              onBlur={() => handleBlur(0)}
+            />
+            <input 
+              type="password" 
+              placeholder="Password" 
+              className="block w-full p-3 mb-4 border border-gray-300 rounded"
+              ref={(el) => (inputsRef.current[1] = el)}
+              onFocus={() => handleFocus(1)}
+              onBlur={() => handleBlur(1)}
+            />
+            <button 
+              ref={buttonRef}
+              className="w-full bg-[#007bff] text-white py-3 rounded border border-[#007bff] flex items-center justify-center space-x-2 transition-transform transform hover:scale-105"
+              onClick={onClose}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
+              <FaSignInAlt />
+              <span>Sign In</span>
+            </button>
+            <p className="mt-4 text-center">
+              Don't have an account? <button onClick={() => setSignUpOpen(true)} className="text-blue-500">Sign Up</button>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+      <SignUp open={signUpOpen} onClose={() => setSignUpOpen(false)} />
+    </>
   );
 };
 
