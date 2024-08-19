@@ -61,7 +61,7 @@ module.exports.signUp = (req, res) => {
               customerObj.password = bcrypt.hashSync(req.body.password, saltround);
               customerObj.contact = req.body.contact;
               customerObj.address = req.body.address;
-              customerObj.userId = userData._id;
+              customerObj.user_id = userData._id;
 
               return customerObj.save()
                 .then(() => {
@@ -78,7 +78,7 @@ module.exports.signUp = (req, res) => {
               sellerObj.password = bcrypt.hashSync(req.body.password, saltround);
               sellerObj.contact = req.body.contact;
               sellerObj.address = req.body.address;
-              sellerObj.userId = userData._id;
+              sellerObj.user_id = userData._id;
 
               return sellerObj.save()
                 .then(() => {
