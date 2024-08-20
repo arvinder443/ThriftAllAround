@@ -30,7 +30,7 @@ module.exports.signUp = (req, res) => {
     console.log("Address is empty");
     validation += "Enter Your Address. ";
   }
-  if (![2, 3].includes(parseInt(req.body.role))) { // Validate role value
+  if (![2, 3].includes(parseInt(req.body.role))) {
     console.log("Invalid role value");
     validation += "Enter a valid Role. ";
   }
@@ -44,52 +44,52 @@ module.exports.signUp = (req, res) => {
   }
 
   User.findOne({ email: req.body.email })
-    .then(uData => {
+    .then((uData) => {
       if (!uData) {
-        let userObj = new User();
-        userObj.name = req.body.name;
-        userObj.email = req.body.email;
-        userObj.password = bcrypt.hashSync(req.body.password, saltround);
-        userObj.role = parseInt(req.body.role); // Ensure role is an integer
-        
-        return userObj.save()
-          .then(userData => {
-            if (userData.role === 2) { // Role 2 is customer
-              let customerObj = new Customer();
-              customerObj.name = req.body.name;
-              customerObj.email = req.body.email;
-              customerObj.password = bcrypt.hashSync(req.body.password, saltround);
-              customerObj.contact = req.body.contact;
-              customerObj.address = req.body.address;
-              customerObj.user_id = userData._id;
+        let userObj = new User({
+          name: req.body.name,
+          email: req.body.email,
+          password: bcrypt.hashSync(req.body.password, saltround),
+          role: parseInt(req.body.role),
+        });
 
-              return customerObj.save()
-                .then(() => {
-                  res.json({
-                    status: 200,
-                    success: true,
-                    msg: "You registered as a customer.",
-                  });
-                });
-            } else if (userData.role === 3) { // Role 3 is seller
-              let sellerObj = new Seller();
-              sellerObj.name = req.body.name;
-              sellerObj.email = req.body.email;
-              sellerObj.password = bcrypt.hashSync(req.body.password, saltround);
-              sellerObj.contact = req.body.contact;
-              sellerObj.address = req.body.address;
-              sellerObj.user_id = userData._id;
+        return userObj.save().then((userData) => {
+          if (userData.role === 2) {
+            let customerObj = new Customer({
+              name: req.body.name,
+              email: req.body.email,
+              password: bcrypt.hashSync(req.body.password, saltround),
+              contact: req.body.contact,
+              address: req.body.address,
+              user_id: userData._id,
+            });
 
-              return sellerObj.save()
-                .then(() => {
-                  res.json({
-                    status: 200,
-                    success: true,
-                    msg: "You registered as a seller.",
-                  });
-                });
-            }
-          });
+            return customerObj.save().then(() => {
+              res.json({
+                status: 200,
+                success: true,
+                msg: "You registered as a customer.",
+              });
+            });
+          } else if (userData.role === 3) {
+            let sellerObj = new Seller({
+              name: req.body.name,
+              email: req.body.email,
+              password: bcrypt.hashSync(req.body.password, saltround),
+              contact: req.body.contact,
+              address: req.body.address,
+              user_id: userData._id,
+            });
+
+            return sellerObj.save().then(() => {
+              res.json({
+                status: 200,
+                success: true,
+                msg: "You registered as a seller.",
+              });
+            });
+          }
+        });
       } else {
         res.json({
           status: 409,
@@ -98,7 +98,7 @@ module.exports.signUp = (req, res) => {
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.json({
         status: 500,
         success: false,
@@ -208,7 +208,5 @@ module.exports.contact = (req, res) => {
   }
 
 }
-// module.exports = signUp;
-// module.exports = login;
-// module.exports = contact;
+
 
