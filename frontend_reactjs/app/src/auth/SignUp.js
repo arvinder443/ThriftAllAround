@@ -76,10 +76,13 @@ const SignUp = ({ open, onClose }) => {
     let formErrors = {};
     let isValid = true;
 
+    // Validate name
     if (!formData.name) {
       formErrors.name = 'Name is required';
       isValid = false;
     }
+
+    // Validate email
     if (!formData.email) {
       formErrors.email = 'Email is required';
       isValid = false;
@@ -87,14 +90,29 @@ const SignUp = ({ open, onClose }) => {
       formErrors.email = 'Email is invalid';
       isValid = false;
     }
+
+    // Validate password
     if (!formData.password) {
       formErrors.password = 'Password is required';
       isValid = false;
+    } else if (formData.password.length < 6) {
+      formErrors.password = 'Password must be at least 6 characters long';
+      isValid = false;
+    } else if (!/(?=.*[a-zA-Z])(?=.*\d)/.test(formData.password)) {
+      formErrors.password = 'Password must contain both letters and numbers';
+      isValid = false;
     }
+
+    // Validate contact number
     if (!formData.contact) {
       formErrors.contact = 'Contact is required';
       isValid = false;
+    } else if (!/^\d{10}$/.test(formData.contact)) {
+      formErrors.contact = 'Contact must be exactly 10 digits';
+      isValid = false;
     }
+
+    // Validate address
     if (!formData.address) {
       formErrors.address = 'Address is required';
       isValid = false;
@@ -107,7 +125,7 @@ const SignUp = ({ open, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) {
-      return; 
+      return; // Stop submission if validation fails
     }
     try {
       const response = await axios.post('http://localhost:3000/user/signup', formData);
